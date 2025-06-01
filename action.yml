@@ -30,7 +30,7 @@ runs:
   using: composite
   steps:
     - name: Abort if command is invalid
-      if: ${{ ! contains(fromJSON('["check", "format"]'), inputs.package_manager) }}
+      if: ${{ ! contains(fromJSON('["check", "format"]'), inputs.command) }}
       run: exit 1
       shell: bash
 
