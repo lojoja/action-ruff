@@ -1,11 +1,13 @@
-!*
 *.egg-info/
+*.lock
 *.sublime-workspace
 ._*
 .coverage
 .DS_Store
+.pnpm-store/
 .pytest_cache/
 .ruff_cache/
 .venv/
 __pycache__/
 node_modules/
+pnpm-lock.yaml
