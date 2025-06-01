@@ -1,0 +1,79 @@
+name: Tests
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  changes:
+    name: Identify changes
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.dedupe.outputs.should_skip }}
+      named: ${{ steps.dedupe.outputs.named }}
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Dedupe
+        id: dedupe
+        uses: lojoja/action-dedupe@main
+        with:
+          github_token: ${{ github.token }}
+          paths: |
+            - .github/workflows/tests.yml
+            - action.yml
+            - tests/*
+
+  test-ruff-check:
+    name: Test ruff check
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.should_skip == 'false'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Run ruff action
+        uses: ./
+        with:
+          command: check
+          python_version: "3.13"
+          working_directory: tests
+
+  test-ruff-format:
+    name: Test ruff format
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.should_skip == 'false'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Run ruff action
+        uses: ./
+        with:
+          command: format
+          python_version: "3.13"
+          working_directory: tests
+
+  result:
+    name: Tests result
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - test-ruff-check
+      - test-ruff-format
+    steps:
+      - name: Tests failed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+      - name: Tests passed
+        run: exit 0

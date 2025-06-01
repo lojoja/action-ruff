@@ -1,0 +1,48 @@
+name: Ruff
+description: >-
+  Check file formatting and/or lint files with ruff.
+  Projects must specify ruff as a dependency.
+
+inputs:
+  cache:
+    description: Whether to cache project dependencies.
+    required: false
+    default: "true"
+  command:
+    description: The command to execute ("check" or "format").
+    required: true
+  package_manager:
+    description: The package manager to use ("poetry" or "uv").
+    required: false
+    default: uv
+  python_version:
+    description: The python version to use in SemVer range syntax.
+    required: false
+    default: "3.13"
+  working_directory:
+    description: The directory to execute commands in.
+    required: false
+    default: "."
+
+outputs: {}
+
+runs:
+  using: composite
+  steps:
+    - name: Abort if command is invalid
+      if: ${{ ! contains(fromJSON('["check", "format"]'), inputs.package_manager) }}
+      run: exit 1
+      shell: bash
+
+    - name: Install python
+      uses: lojoja/action-setup-python-env@main
+      with:
+        cache: ${{ inputs.cache }}
+        package_manager: ${{ inputs.package_manager }}
+        python_version: ${{ inputs.python_version }}
+        working_directory: ${{ inputs.working_directory }}
+
+    - name: Run ruff
+      run: ${{ inputs.package_manager }} run ruff ${{ inputs.command }}${{ inputs.command == 'format' && ' --check' || '' }}
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
