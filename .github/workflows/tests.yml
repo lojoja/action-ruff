@@ -8,6 +8,9 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  PYTHON_VERSION: "3.13"
+
 jobs:
   changes:
     name: Identify changes
@@ -45,7 +48,7 @@ jobs:
         uses: ./
         with:
           command: check
-          python_version: "3.13"
+          python_version: ${{ env.PYTHON_VERSION }}
           working_directory: tests
 
   test-ruff-format:
@@ -61,7 +64,7 @@ jobs:
         uses: ./
         with:
           command: format
-          python_version: "3.13"
+          python_version: ${{ env.PYTHON_VERSION }}
           working_directory: tests
 
   result:
