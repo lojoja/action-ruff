@@ -30,7 +30,7 @@ jobs:
           paths: |
             - .github/workflows/tests.yml
             - action.yml
-            - tests/*
+            - tests/**
 
   test-ruff-check:
     name: Test ruff check
