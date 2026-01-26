@@ -45,7 +45,7 @@ jobs:
     if: needs.changes.outputs.should_skip == 'false' || ! fromJSON(needs.changes.outputs.named).prettier.should_skip
     steps:
       - name: Check out repository
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Run prettier
         uses: lojoja/action-prettier@main
@@ -59,7 +59,7 @@ jobs:
     if: needs.changes.outputs.should_skip == 'false' || ! fromJSON(needs.changes.outputs.named).tests.should_skip
     steps:
       - name: Check out repository
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Run ruff action
         uses: ./
@@ -75,7 +75,7 @@ jobs:
     if: needs.changes.outputs.should_skip == 'false' || ! fromJSON(needs.changes.outputs.named).tests.should_skip
     steps:
       - name: Check out repository
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Run ruff action
         uses: ./
