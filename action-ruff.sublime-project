@@ -16,6 +16,9 @@
       "LSP-ruff": {
         "enabled": true
       },
+      "LSP-ty": {
+        "enabled": true
+      },
       "LSP-yaml": {
         "settings": {
           "yaml.schemas": {

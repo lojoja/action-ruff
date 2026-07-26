@@ -1,9 +1,9 @@
 [project]
 name = "action-ruff"
 version = "0.0.0"
-requires-python = ">=3.13,<4"
+requires-python = ">=3.14,<4"
 dependencies = [
-  "ruff (==0.11.12)"
+  "ruff (==0.16.0)"
 ]
 
 [build-system]
